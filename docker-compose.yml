@@ -1,0 +1,57 @@
+version: '3.7'
+
+x-app: &app
+  build:
+    context: .
+    dockerfile: ./.docker/Dockerfile
+    args:
+      ELIXIR_VERSION: ${ELIXIR_VERSION}
+      PHOENIX_VERSION: ${PHOENIX_VERSION}
+      NODE_MAJOR: ${NODE_MAJOR}
+      YARN_VERSION: ${YARN_VERSION}
+      POSTGRES_MAJOR: ${POSTGRES_MAJOR}
+  environment: &env
+    MIX_ENV: ${MIX_ENV}
+  image: elixir-on-whales:1.0.0
+  tmpfs:
+    - /tmp
+
+x-backend: &backend
+  <<: *app
+  stdin_open: true
+  tty: true
+  volumes:
+    - .:/app:cached
+    - .docker/.psqlrc:/root/.psqlrc:ro
+  environment:
+    <<: *env
+    DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD}@postgres:5432/${MIX_ENV}_db
+    HISTFILE: /app/log/.bash_history
+    PSQL_HISTFILE: /app/log/.psql_history
+    EDITOR: vi
+
+services:
+  shell:
+    <<: *backend
+    command: /bin/bash
+
+  phoenix:
+    <<: *backend
+    command: bash -c "test -f mix.exs && mix phx.server"
+    ports:
+      - 4000:4000
+
+  postgres:
+    image: postgres:${POSTGRES_MAJOR}
+    volumes:
+      - postgres:/var/lib/postgresql/data
+      - .docker/.psqlrc:/root/.psqlrc:ro
+      - ./log:/root/log:cached
+    environment:
+      PSQL_HISTFILE: /root/log/.psql_history
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - 5432:5432
+
+volumes:
+  postgres:
