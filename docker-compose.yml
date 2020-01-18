@@ -6,7 +6,6 @@ x-app: &app
     dockerfile: ./.docker/Dockerfile
     args:
       ELIXIR_VERSION: ${ELIXIR_VERSION}
-      PHOENIX_VERSION: ${PHOENIX_VERSION}
       NODE_MAJOR: ${NODE_MAJOR}
       YARN_VERSION: ${YARN_VERSION}
       POSTGRES_MAJOR: ${POSTGRES_MAJOR}
@@ -22,6 +21,8 @@ x-backend: &backend
   tty: true
   volumes:
     - .:/app:cached
+    - mix:/root/.mix
+    - hex:/root/.hex
     - .docker/.psqlrc:/root/.psqlrc:ro
   environment:
     <<: *env
@@ -37,7 +38,7 @@ services:
 
   phoenix:
     <<: *backend
-    command: bash -c "test -f mix.exs && mix phx.server"
+    command: bash -c "test -f /app/_build/dev/lib/phoenix/ebin/Elixir.Mix.Phoenix.beam && mix phx.server"
     ports:
       - 4000:4000
 
@@ -54,4 +55,6 @@ services:
       - 5432:5432
 
 volumes:
+  mix:
+  hex:
   postgres:

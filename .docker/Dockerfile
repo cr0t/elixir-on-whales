@@ -1,11 +1,9 @@
 ARG ELIXIR_VERSION
 FROM elixir:$ELIXIR_VERSION
 # -slim version of erlang is based on non-slim debian:buster
-# so we get errors with curl and SSL when trying to add PG source
+# and we get errors with curl and SSL when trying to add PG source
 
-ARG PHOENIX_VERSION
 ARG NODE_MAJOR
-ARG YARN_VERSION
 ARG POSTGRES_MAJOR
 
 # Common dependencies
@@ -29,10 +27,6 @@ RUN curl -sSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
 # Add NodeJS to sources list
 RUN curl -sL https://deb.nodesource.com/setup_$NODE_MAJOR.x | bash -
 
-# Add Yarn to the sources list
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
-  && echo 'deb http://dl.yarnpkg.com/debian/ stable main' > /etc/apt/sources.list.d/yarn.list
-
 # Install dependencies
 COPY .docker/Aptfile /tmp/Aptfile
 RUN apt-get update -qq \
@@ -41,7 +35,6 @@ RUN apt-get update -qq \
   libpq-dev \
   postgresql-client-$POSTGRES_MAJOR \
   nodejs \
-  yarn=$YARN_VERSION-1 \
   $(cat /tmp/Aptfile | xargs) \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
@@ -49,10 +42,9 @@ RUN apt-get update -qq \
 
 ENV LANG=C.UTF-8
 
-# Install Hex locally, and the given phoenix framework version
+# Install Hex and Rebar
 RUN mix local.hex --force \
-  && mix local.rebar --force \
-  && mix archive.install hex phx_new $PHOENIX_VERSION --force
+  && mix local.rebar --force
 
 # Create a directory for the app code
 RUN mkdir -p /app
