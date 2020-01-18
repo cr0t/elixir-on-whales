@@ -7,7 +7,6 @@ x-app: &app
     args:
       ELIXIR_VERSION: ${ELIXIR_VERSION}
       NODE_MAJOR: ${NODE_MAJOR}
-      YARN_VERSION: ${YARN_VERSION}
       POSTGRES_MAJOR: ${POSTGRES_MAJOR}
   environment: &env
     MIX_ENV: ${MIX_ENV}
@@ -23,10 +22,11 @@ x-backend: &backend
     - .:/app:cached
     - mix:/root/.mix
     - hex:/root/.hex
+    - node_modules:/app/assets/node_modules
     - .docker/.psqlrc:/root/.psqlrc:ro
   environment:
     <<: *env
-    DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD}@postgres:5432/${MIX_ENV}_db
+    DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD}@postgres:5432/app_${MIX_ENV}
     HISTFILE: /app/log/.bash_history
     PSQL_HISTFILE: /app/log/.psql_history
     EDITOR: vi
@@ -57,4 +57,5 @@ services:
 volumes:
   mix:
   hex:
+  node_modules:
   postgres:
