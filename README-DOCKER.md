@@ -35,6 +35,15 @@ config :app, ElixirTest.Repo,
   pool_size: 10
 
 # For development, ...
+root@f253eaa0b3e7:/app# cat config/test.exs
+use Mix.Config
+
+# Configure your database
+config :app, Rumbl.Repo,
+  url: System.get_env("DATABASE_URL") |> String.replace("app_dev", "app_test"),
+  pool: Ecto.Adapters.SQL.Sandbox
+
+# We don't run a server during test...
 root@f253eaa0b3e7:/app# mix ecto.create
 root@f253eaa0b3e7:/app# exit
 $ docker-compose stop # or down
@@ -42,5 +51,9 @@ $ docker-compose start # or up
 ```
 
 > We need to run two last commands to re-start all services defined in `docker-compose.yml` (if we left it original).
+
+Also, as you see, we did a hack with `String.replace("app_dev", "app_test")` in `test.exs` configuration file - this a dirty workaround that uses the same DATABASE_URL, but its own database to run tests.
+
+> Do not forget to explicitly run `MIX_ENV=test mix test` command.
 
 Ok! Now you can try to open http://localhost:4000/ in the browser on the host machine and check if you see Phoenix welcome page.
