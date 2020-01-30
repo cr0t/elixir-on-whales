@@ -38,9 +38,12 @@ config :app, ElixirTest.Repo,
 root@f253eaa0b3e7:/app# cat config/test.exs
 use Mix.Config
 
+database_url =
+  System.get_env("DATABASE_URL") || "postgres://postgres:secret@postgres:5432/app_dev"
+
 # Configure your database
 config :app, Rumbl.Repo,
-  url: System.get_env("DATABASE_URL") |> String.replace("app_dev", "app_test"),
+  url: database_url |> String.replace("app_dev", "app_test"),
   pool: Ecto.Adapters.SQL.Sandbox
 
 # We don't run a server during test...
