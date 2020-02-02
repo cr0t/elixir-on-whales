@@ -1,6 +1,6 @@
 # Elixir on Whales
 
-> Inspired by https://evilmartians.com/chronicles/ruby-on-whales-docker-for-ruby-rails-development article.
+> Inspired by [Dockerizing Ruby and Rails development] blog post.
 
 It's a Docker Compose template repository that should helps in bootstrapping an environment for writing Elixir and/or Phoenix applications.
 
@@ -66,3 +66,5 @@ Also, as you see, we did a hack with `String.replace("app_dev", "app_test")` in 
 > Do not forget to explicitly run `MIX_ENV=test mix test` command.
 
 Ok! Now you can try to open http://localhost:4000/ in the browser on the host machine and check if you see Phoenix welcome page.
+
+[Dockerizing Ruby and Rails development]: https://evilmartians.com/chronicles/ruby-on-whales-docker-for-ruby-rails-development
