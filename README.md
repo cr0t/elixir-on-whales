@@ -1,6 +1,10 @@
-# Phoenix on Whales
+# Elixir on Whales
 
-It's an attempt to write a Docker Compose template for the environment that helps us writing Elixir and/or Phoenix applications.
+> Inspired by https://evilmartians.com/chronicles/ruby-on-whales-docker-for-ruby-rails-development article.
+
+It's a Docker Compose template repository that should helps in bootstrapping an environment for writing Elixir and/or Phoenix applications.
+
+Below we provided a step-by-step instructions on how to bootstrap your local development environment.
 
 ## New Phoenix Application
 
@@ -10,6 +14,8 @@ $ git clone git@github.com:cr0t/elixir-on-whales.git <your-app-name>
 $ cd <your-app-name> && rm -rf .git
 
 $ mv .env.example .env
+
+$ mv README.md README-ON-WHALES.md # we need this to avoid conflicts with app's README.md
 
 # now you can open docker-compose.yml, remove services you do not need
 # and adjust versions and other settings in the .env file before you proceed
