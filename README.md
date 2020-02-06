@@ -68,3 +68,43 @@ Also, as you see, we did a hack with `String.replace("app_dev", "app_test")` in 
 Ok! Now you can try to open http://localhost:4000/ in the browser on the host machine and check if you see Phoenix welcome page.
 
 [Dockerizing Ruby and Rails development]: https://evilmartians.com/chronicles/ruby-on-whales-docker-for-ruby-rails-development
+
+## Using `:observer` in macOS
+
+If you are using macOS and want to be able to access `:observer` GUI, there is a workaround we found [here](https://github.com/moby/moby/issues/8710).
+
+First, you need to install a couple of utilities:
+
+```bash
+$ brew install socat
+$ brew cask install xquartz
+```
+
+> Likely you will need to restart your system.
+
+[`socat`](http://www.dest-unreach.org/socat/) ("SOcket CAT: netcat on steroids") is a small utility which can help us with proxying ports.
+
+The [XQuartz project](https://www.xquartz.org/) is an open-source effort to develop a version of the X.Org X Window System that runs on OS X.
+
+Then you also need to obtain your host machine local network IP address (try to run `ipconfig getifaddr en0` or look into System Preferences). You need to update `.env` file with this piece of information (see `X_WINDOWS_ADDRESS`).
+
+Now we need to start proxy on the host system (use a separate terminal to run this command):
+
+```bash
+$ socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\"$DISPLAY\"
+```
+
+After having this done we can start using magic of remote X Window sessions:
+
+```bash
+$ docker-compose exec phoenix iex
+Erlang/OTP 22 [erts-10.6.2] [source] [64-bit] [smp:6:6] [ds:6:6:10] [async-threads:1] [hipe]
+
+Interactive Elixir (1.9.4) - press Ctrl+C to exit (type h() ENTER for help)
+iex(1)> :observer.start()
+:ok
+```
+
+Now you should see something similar to this on your screen:
+
+![docker-observer-mac-os-x-windows](https://user-images.githubusercontent.com/113878/73979910-6b420200-492f-11ea-9b1d-d526b11c9d06.png)
