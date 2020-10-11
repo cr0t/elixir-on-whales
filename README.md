@@ -2,9 +2,9 @@
 
 > Inspired by [Dockerizing Ruby and Rails development] blog post.
 
-It's a Docker Compose template repository that should helps in bootstrapping an environment for writing Elixir and/or Phoenix applications.
+Docker Compose template that helps in bootstrapping an environment for Elixir and/or Phoenix applications.
 
-Below we provided a step-by-step instructions on how to bootstrap your local development environment.
+Below we provide a step-by-step instruction on how to bootstrap your local development environment.
 
 ## New Phoenix Application
 
@@ -28,7 +28,7 @@ $ docker-compose up
 ```bash
 $ docker-compose exec shell bash
 
-root@f253eaa0b3e7:/app# mix archive.install hex phx_new 1.4.11
+root@f253eaa0b3e7:/app# mix archive.install hex phx_new 1.5.5
 root@f253eaa0b3e7:/app# mix phx.new . --module <YourProjectName>
 root@f253eaa0b3e7:/app# vim config/dev.exs
 root@f253eaa0b3e7:/app# cat config/dev.exs
@@ -61,7 +61,7 @@ $ docker-compose start # or up
 
 > We need to run two last commands to re-start all services defined in `docker-compose.yml` (if we left it original).
 
-Also, as you see, we did a hack with `String.replace("app_dev", "app_test")` in `test.exs` configuration file - this a dirty workaround that uses the same DATABASE_URL, but its own database to run tests.
+As you see, we made a trick with `String.replace("app_dev", "app_test")` in `test.exs` configuration file - this is a dirty workaround that converts DATABASE_URL to its own database url to run tests.
 
 > Do not forget to explicitly run `MIX_ENV=test mix test` command.
 
@@ -71,7 +71,7 @@ Ok! Now you can try to open http://localhost:4000/ in the browser on the host ma
 
 ## Using `:observer` in macOS
 
-If you are using macOS and want to be able to access `:observer` GUI, there is a workaround we found [here](https://github.com/moby/moby/issues/8710).
+If you use macOS and want to be able to access `:observer` GUI, there is a workaround we found [here](https://github.com/moby/moby/issues/8710).
 
 First, you need to install a couple of utilities:
 
@@ -80,7 +80,7 @@ $ brew install socat
 $ brew cask install xquartz
 ```
 
-> Likely you will need to restart your system.
+> Probably, you will need to restart your system.
 
 [`socat`](http://www.dest-unreach.org/socat/) ("SOcket CAT: netcat on steroids") is a small utility which can help us with proxying ports.
 
