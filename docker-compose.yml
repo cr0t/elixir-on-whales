@@ -24,6 +24,7 @@ x-backend: &backend
     - hex:/root/.hex
     - node_modules:/app/assets/node_modules
     - .docker/.psqlrc:/root/.psqlrc:ro
+    - ./log/.erlang-history:/root/.cache/erlang-history
   environment:
     <<: *env
     DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD}@postgres:5432/app_${MIX_ENV}
@@ -31,6 +32,7 @@ x-backend: &backend
     PSQL_HISTFILE: /app/log/.psql_history
     DISPLAY: ${X_WINDOWS_ADDRESS}:0
     EDITOR: vi
+    ERL_AFLAGS: -kernel shell_history enabled
 
 services:
   shell:
