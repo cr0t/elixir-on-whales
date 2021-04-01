@@ -1,7 +1,5 @@
 ARG ELIXIR_VERSION
-FROM elixir:$ELIXIR_VERSION
-# -slim version of erlang is based on non-slim debian:buster
-# and we get errors with curl and SSL when trying to add PG source
+FROM elixir:$ELIXIR_VERSION-slim
 
 ARG NODE_MAJOR
 ARG POSTGRES_MAJOR
@@ -9,6 +7,7 @@ ARG POSTGRES_MAJOR
 # Common dependencies
 RUN apt-get update -qq \
   && DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends \
+  ca-certificates \
   inotify-tools \
   build-essential \
   gnupg2 \
