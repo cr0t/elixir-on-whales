@@ -28,7 +28,7 @@ $ docker-compose up
 ```bash
 $ docker-compose exec shell bash
 
-root@f253eaa0b3e7:/app# mix archive.install hex phx_new 1.5.5
+root@f253eaa0b3e7:/app# mix archive.install hex phx_new 1.5.8
 root@f253eaa0b3e7:/app# mix phx.new . --module <YourProjectName>
 root@f253eaa0b3e7:/app# vim config/dev.exs
 root@f253eaa0b3e7:/app# cat config/dev.exs
