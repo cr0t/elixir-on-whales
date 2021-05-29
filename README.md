@@ -26,9 +26,9 @@ $ docker-compose up
 **In a separate terminal** you need to start a new shell session to install Phoenix.
 
 ```bash
-$ docker-compose exec shell bash
+$ docker-compose exec shell sh
 
-root@f253eaa0b3e7:/app# mix archive.install hex phx_new 1.5.8
+root@f253eaa0b3e7:/app# mix archive.install hex phx_new 1.5.9
 root@f253eaa0b3e7:/app# mix phx.new . --module <YourProjectName>
 root@f253eaa0b3e7:/app# vim config/dev.exs
 root@f253eaa0b3e7:/app# cat config/dev.exs

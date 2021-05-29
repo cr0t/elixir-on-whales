@@ -3,14 +3,15 @@ version: '3.7'
 x-app: &app
   build:
     context: .
-    dockerfile: ./.docker/Dockerfile
+    dockerfile: .docker/Dockerfile
     args:
+      ERLANG_VERSION: ${ERLANG_VERSION}
       ELIXIR_VERSION: ${ELIXIR_VERSION}
-      NODE_MAJOR: ${NODE_MAJOR}
-      POSTGRES_MAJOR: ${POSTGRES_MAJOR}
+      NODE_VERSION: ${NODE_VERSION}
+      POSTGRES_VERSION: ${POSTGRES_VERSION}
   environment: &env
     MIX_ENV: ${MIX_ENV}
-  image: elixir-on-whales:1.0.0
+  image: elixir-on-whales:2.0.0
   tmpfs:
     - /tmp
 
@@ -28,7 +29,7 @@ x-backend: &backend
   environment:
     <<: *env
     DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD}@postgres:5432/app_${MIX_ENV}
-    HISTFILE: /app/log/.bash_history
+    HISTFILE: /app/log/.shell_history
     PSQL_HISTFILE: /app/log/.psql_history
     DISPLAY: ${X_WINDOWS_ADDRESS}:0
     EDITOR: vi
@@ -37,16 +38,16 @@ x-backend: &backend
 services:
   shell:
     <<: *backend
-    command: /bin/bash
+    command: /bin/sh
 
   phoenix:
     <<: *backend
-    command: bash -c "test -f /app/_build/dev/lib/phoenix/ebin/Elixir.Mix.Phoenix.beam && mix phx.server"
+    command: /bin/sh -c "test -f /app/_build/dev/lib/phoenix/ebin/Elixir.Mix.Phoenix.beam && mix phx.server"
     ports:
       - 4000:4000
 
   postgres:
-    image: postgres:${POSTGRES_MAJOR}
+    image: postgres:${POSTGRES_VERSION}-alpine
     volumes:
       - postgres:/var/lib/postgresql/data
       - .docker/.psqlrc:/root/.psqlrc:ro
