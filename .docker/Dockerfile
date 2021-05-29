@@ -9,7 +9,7 @@ ARG POSTGRES_VERSION
 
 # Install dependencies
 RUN apk add --no-cache --update --repository=http://dl-cdn.alpinelinux.org/alpine/v3.13/main \
-    build-base git curl inotify-tools openssl ncurses-libs npm \
+    build-base git curl vim inotify-tools openssl ncurses-libs npm \
     nodejs~${NODE_VERSION} \
     postgresql-dev~${POSTGRES_VERSION}
 

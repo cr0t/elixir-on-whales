@@ -28,10 +28,10 @@ $ docker-compose up
 ```bash
 $ docker-compose exec shell sh
 
-root@f253eaa0b3e7:/app# mix archive.install hex phx_new 1.5.9
-root@f253eaa0b3e7:/app# mix phx.new . --module <YourProjectName>
-root@f253eaa0b3e7:/app# vim config/dev.exs
-root@f253eaa0b3e7:/app# cat config/dev.exs
+/app# mix archive.install hex phx_new 1.5.9
+/app# mix phx.new . --module <YourProjectName>
+/app# vim config/dev.exs
+/app# cat config/dev.exs
 use Mix.Config
 
 # Configure your database
@@ -41,7 +41,7 @@ config :app, ElixirTest.Repo,
   pool_size: 10
 
 # For development, ...
-root@f253eaa0b3e7:/app# cat config/test.exs
+/app# cat config/test.exs
 use Mix.Config
 
 database_url =
@@ -53,8 +53,8 @@ config :app, Rumbl.Repo,
   pool: Ecto.Adapters.SQL.Sandbox
 
 # We don't run a server during test...
-root@f253eaa0b3e7:/app# mix ecto.create
-root@f253eaa0b3e7:/app# exit
+/app# mix ecto.create
+/app# exit
 $ docker-compose stop # or down
 $ docker-compose start # or up
 ```
