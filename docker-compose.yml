@@ -1,12 +1,13 @@
-version: '3.7'
+version: '3'
 
 x-app: &app
   build:
     context: .
     dockerfile: .docker/Dockerfile
     args:
-      ERLANG_VERSION: ${ERLANG_VERSION}
       ELIXIR_VERSION: ${ELIXIR_VERSION}
+      ERLANG_VERSION: ${ERLANG_VERSION}
+      ALPINE_VERSION: ${ALPINE_VERSION}
       NODE_VERSION: ${NODE_VERSION}
       POSTGRES_VERSION: ${POSTGRES_VERSION}
   environment: &env
